@@ -1,0 +1,36 @@
+﻿<Page
+    x:Class="RgbLed.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RgbLed"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+        <StackPanel Margin="10,10,10,10">
+            <TextBlock Text="RGB LED lamp control" FontSize="20" HorizontalAlignment="Center" />
+            <Slider x:Name="uiRed" Header="Red" HorizontalAlignment="Stretch" Maximum="255" TickFrequency="32" Value="255" TickPlacement="BottomRight" />
+            <Slider x:Name="uiGreen" Header="Green" HorizontalAlignment="Stretch" TickFrequency="32" Maximum="255" TickPlacement="BottomRight"/>
+            <Slider x:Name="uiBlue" Header="Blue" HorizontalAlignment="Stretch" TickFrequency="32" Maximum="255" TickPlacement="BottomRight"/>
+            <Button HorizontalAlignment="Center" Content="Set!" Click="uiRgbSet_Click"/>
+            <Slider x:Name="uiWhite" Header="White" HorizontalAlignment="Stretch" TickFrequency="32" Maximum="255" TickPlacement="BottomRight" />
+            <Button HorizontalAlignment="Center" Content="Set!" Click="uiWhiteSet_Click" />
+        </StackPanel>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Compact"   >
+            <AppBarButton Icon="List" Label="Devices" >
+                <AppBarButton.Flyout>
+                    <MenuFlyout x:Name="uiDevicesy">
+
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarSeparator/>
+            <AppBarButton Icon="Setting" Label="Settings" Click="uiSettings_Click" />
+            <AppBarButton Icon="Help" Label="Info" Click="uiAbout_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+</Page>

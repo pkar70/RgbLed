@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="RgbLed.SelectBulb"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RgbLed"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded" Unloaded="Page_Unload" >
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Name="uiGrid" Margin="5,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- title -->
+            <RowDefinition Height="Auto" />
+            <!-- toggle / text-->
+            <RowDefinition Height="Auto" />
+            <!-- button scan -->
+            <RowDefinition Height="*" />
+            <!-- lista devicesow -->
+            <RowDefinition Height="Auto" />
+            <!-- buttony zamykania -->
+        </Grid.RowDefinitions>
+
+        <ProgressRing Name="uiProcesuje" Grid.RowSpan="5"  HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
+
+        <TextBlock Text="Search bulb" FontSize="20" HorizontalAlignment="Center" />
+        <!--<ToggleSwitch Grid.Row="1" Name="uiFindAll" IsOn="False" OffContent="Only paired devices" OnContent="All devices" /> -->
+        <TextBlock Grid.Row="1" Text="(only selected devices will be saved)" HorizontalAlignment="Center" />
+        <Button Grid.Row="2" Name="uiScan" Content="Scan" HorizontalAlignment="Center" Click="uiScan_Click"  />
+
+        <ListView Grid.Row="3" Name="uiListItems" Margin="2,5,5,5" HorizontalContentAlignment="Stretch"  >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"  Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid BorderThickness="1" BorderBrush="Blue" >
+                        <CheckBox Content="{Binding sName, Mode=OneWay }" IsEnabled="{Binding bEnabled, Mode=OneWay }" IsChecked="{Binding bSelected, Mode=TwoWay }" Margin="2,2,2,2"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Row="4" Content="Save!" HorizontalAlignment="Center" Click="uiSave_Click" />
+    </Grid>
+</Page>
