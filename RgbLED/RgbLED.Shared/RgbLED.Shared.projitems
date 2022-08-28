@@ -50,5 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
+    <None Include="$(MSBuildThisFileDirectory)_changes.txt" />
+    <None Include="$(MSBuildThisFileDirectory)_tudus.txt" />
   </ItemGroup>
 </Project>

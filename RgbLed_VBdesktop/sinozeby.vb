@@ -39,7 +39,8 @@ Module sinozeby
         End If
 
 #If DEBUG Then
-        Await DebugBTdeviceAsync(oPilotBT)
+        'Await DebugBTdeviceAsync(oPilotBT)
+        DebugOut(Await oPilotBT.ToDebusStringAsync)
 #End If
 
         Dim oSvc As GattDeviceServicesResult = Nothing
