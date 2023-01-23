@@ -1,4 +1,5 @@
 ﻿
+
 ' 2020.01.16
 '   * rozdzielenie na dwie wersje (dwa Project): mobile (=15063) i desktop (>=16299)
 '       wersja desktop: z obsługą cmdline, build PKAR_CMDLINE
@@ -196,9 +197,9 @@ Public NotInheritable Class MainPage
 
         Await NetIsBTavailableAsync(True)
         ProgRingInit(True, False)
-        GetAppVers(Nothing)
+        Me.ShowAppVers()
 
-        App.msLastBulbId = GetSettingsString("BulbId", "")
+        App.msLastBulbId = pkar.GetSettingsString("BulbId")
 
         Await App.moItemy.Load
         ' dodaj to do menu uiDevicesy, z bSelected=false dla wszystkich poza App.msLastBulbId

@@ -138,7 +138,7 @@ Public Module DostepBluetooth
             oWriter.WriteByte(&HF0)
         End If
         oWriter.WriteByte(&HAA)
-        'MakeToast("BtSendCommandLEDBLE writing")
+        'MakeToast($"BtSendCommandLEDBLE: {iRed}, {iGreen}, {iBlue}")
         Dim oResp = Await oChar.WriteValueAsync(oWriter.DetachBuffer, Windows.Devices.Bluetooth.GenericAttributeProfile.GattWriteOption.WriteWithoutResponse)
 
     End Function

@@ -190,6 +190,8 @@ NotInheritable Class App
         ' nic nie mozemy zrobic, bo nie mamy w ogóle zapamiętanych devicesów
         If App.moItemy.Count < 1 Then Return "ERROR: no RGBbulb defined"
 
+        'MakeToast(sParam)
+
         Dim aParams As String() = sParam.Split(" ")
         If aParams.Count <> 2 AndAlso aParams.Count <> 4 Then
             Return "ERROR: Too many or too little paramaters"
@@ -206,7 +208,7 @@ NotInheritable Class App
         If Not Integer.TryParse(aParams.ElementAt(1), iPar1) Then
             Return "ERROR: par1 parse failed, =" & aParams.ElementAt(1)
         End If
-        iPar1 = Math.Min(Math.Max(iPar1, 0), 255)
+        iPar1 = iPar1.Between(0, 255)
 
         If aParams.Count > 2 Then
 
@@ -214,14 +216,16 @@ NotInheritable Class App
             If Not Integer.TryParse(aParams.ElementAt(2), iPar2) Then
                 Return "ERROR: par2 parse failed, =" & aParams.ElementAt(2)
             End If
-            iPar2 = Math.Min(Math.Max(iPar2, 0), 255)
+            iPar2 = iPar2.Between(0, 255)
 
             Dim iPar3 As Integer
-            If Not Integer.TryParse(aParams.ElementAt(3), iPar1) Then
+            If Not Integer.TryParse(aParams.ElementAt(3), iPar3) Then
                 Return "ERROR: par3 parse failed, =" & aParams.ElementAt(3)
             End If
-            iPar3 = Math.Min(Math.Max(iPar3, 0), 255)
+            iPar3 = iPar3.Between(0, 255)
 
+            'MakeToast($"ObsluzParamMain Elementy: {aParams.ElementAt(0)}, {aParams.ElementAt(1)}, {aParams.ElementAt(2)}, {aParams.ElementAt(3)}")
+            'MakeToast($"ObsluzParamMain RGB: {iPar1}, {iPar2}, {iPar3}")
             'Await DebugLogFileOutAsync("Setting RGB " & iPar1 & ", " & iPar2 & ", " & iPar3 & ", ")
             Await BtSendCommand(oItem, False, iPar1, iPar2, iPar3, 0)
         Else
