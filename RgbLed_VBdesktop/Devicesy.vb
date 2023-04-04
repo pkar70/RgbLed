@@ -8,7 +8,7 @@
     <System.Xml.Serialization.XmlAttribute()>
     Public Property bWhite As Boolean
     <System.Xml.Serialization.XmlAttribute()>
-    Public Property iTyp As Integer = 0 ' 1: LEDBLE, 2: Tricolor
+    Public Property iTyp As Integer ' BulbType = BulbType.Unknown ' 1: LEDBLE, 2: Tricolor, 3:ELK-BLEDOM
     <System.Xml.Serialization.XmlAttribute>
     Public Property bEnabled As Boolean     ' enabled na liscie - tzn. pasuje jako sterowalny
     <System.Xml.Serialization.XmlIgnore>
@@ -17,6 +17,13 @@
     Public Property sDisplayName As String
     <System.Xml.Serialization.XmlIgnore>
     Public Property bSave As Boolean    ' czy ma byc zapisany
+End Class
+
+Public Class BulbType
+    Public Shared Property Unknown As Integer = 0
+    Public Shared Property LEDBLE As Integer = 1
+    Public Shared Property Tricolor As Integer = 2
+    Public Shared Property ELKBLEDOM As Integer = 3
 End Class
 
 Public Class Devicesy
@@ -36,19 +43,19 @@ Public Class Devicesy
     End Sub
 
 
-    Public Sub Add(sId As String, sName As String, sAddr As String, bWhite As Boolean, iTyp As Integer,
-                    bSelected As Boolean, bEnabled As Boolean, bSave As Boolean)
-        Dim oNew As JedenDevice = New JedenDevice
-        oNew.sId = sId
-        oNew.sName = sName
-        oNew.sAddr = sAddr
-        oNew.bWhite = bWhite
-        oNew.iTyp = iTyp
-        oNew.bEnabled = bEnabled
-        oNew.bSelected = bSelected
-        oNew.bSave = bSave
-        Add(oNew)
-    End Sub
+    'Public Sub Add(sId As String, sName As String, sAddr As String, bWhite As Boolean, iTyp As Integer,
+    '                bSelected As Boolean, bEnabled As Boolean, bSave As Boolean)
+    '    Dim oNew As JedenDevice = New JedenDevice
+    '    oNew.sId = sId
+    '    oNew.sName = sName
+    '    oNew.sAddr = sAddr
+    '    oNew.bWhite = bWhite
+    '    oNew.iTyp = iTyp
+    '    oNew.bEnabled = bEnabled
+    '    oNew.bSelected = bSelected
+    '    oNew.bSave = bSave
+    '    Add(oNew)
+    'End Sub
     ' Delete
     ' New
     Public Async Function Save(Optional bAll As Boolean = False) As Task
@@ -170,13 +177,41 @@ Public Module DostepBluetooth
 
     End Function
 
+    Private Async Function BtSendCommandBLEDOM(sBulbId As String, bWhite As Boolean, iRed As Integer, iGreen As Integer, iBlue As Integer, iWhite As Integer) As Task
+        Dim oChar As Windows.Devices.Bluetooth.GenericAttributeProfile.GattCharacteristic = Await BulbGetSvc(3, sBulbId)
+        If oChar Is Nothing Then Return ' error, brak kontaktu zapewne
+
+        Dim oWriter As Windows.Storage.Streams.DataWriter = New Windows.Storage.Streams.DataWriter
+        oWriter.WriteByte(&H7E)
+        oWriter.WriteByte(0)
+        oWriter.WriteByte(5)
+        oWriter.WriteByte(3)
+        ' RGB: 0x56, r, g, b, 0x00, 0xf0, 0xaa
+        If bWhite Then
+            oWriter.WriteByte(iWhite)
+            oWriter.WriteByte(iWhite)
+            oWriter.WriteByte(iWhite)
+        Else
+            oWriter.WriteByte(iRed)
+            oWriter.WriteByte(iGreen)
+            oWriter.WriteByte(iBlue)
+        End If
+        oWriter.WriteByte(0)
+        oWriter.WriteByte(&HEF)
+
+        Await oChar.WriteValueAsync(oWriter.DetachBuffer, Windows.Devices.Bluetooth.GenericAttributeProfile.GattWriteOption.WriteWithoutResponse)
+    End Function
+
     Public Async Function BtSendCommand(oItem As JedenDevice, bWhite As Boolean, iRed As Integer, iGreen As Integer, iBlue As Integer, iWhite As Integer) As Task
         Select Case oItem.iTyp
-            Case 1
+            Case BulbType.LEDBLE
                 Await BtSendCommandLEDBLE(oItem.sId, bWhite, iRed, iGreen, iBlue, iWhite)
-            Case 2
+            Case BulbType.Tricolor
                 Await BtSendCommandTriones(oItem.sId, bWhite, iRed, iGreen, iBlue, iWhite)
+            Case BulbType.ELKBLEDOM
+                Await BtSendCommandBLEDOM(oItem.sId, bWhite, iRed, iGreen, iBlue, iWhite)
         End Select
     End Function
+
 
 End Module

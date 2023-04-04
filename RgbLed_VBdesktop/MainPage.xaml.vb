@@ -1,38 +1,4 @@
 ﻿
-
-' 2020.01.16
-'   * rozdzielenie na dwie wersje (dwa Project): mobile (=15063) i desktop (>=16299)
-'       wersja desktop: z obsługą cmdline, build PKAR_CMDLINE
-'       nie może być ta sama, bo Manifest jest nierozumiany przez telefon
-'       wiekszosc plików: MkLink, ale *pfx musiały być copy, bo link nie działał
-
-'   * Desktop: obsługa CommandLine:
-'       rgbbulb MACADDR p1 [p2 p3]
-'       MACADDR: może być z : - . jako separatorami części
-'       p1: gdy samo, to set white, gdy razem z p2 i p3 to RED
-'       p2, p3: gdy istnieją (oba!), to GREEN i BLUE
-'   * SelectBulb: pokazuje na Loaded istniejącą listę devicesów
-'   * SelectBulb: dodałem BottomBar z copy/export i Save
-'   * MainPage: dla Desktop, pokazuje dwa dodatkowe guziki, Copy - do tworzenia skryptow
-'   * version: 3.2101
-
-' 2020.01.13
-'   * uruchomienie Triones
-'   * dowolnie dużo devices może być znalezione
-'   * nie wymaga uprzedniego Pair
-'   * ta sama komenda do wszystkich zaznaczonych devices
-'   * zapisywanie listy devices
-'   * zmiana numeracji wersji: poprzdnia 1.1.1, aktualna: 2.2001.1 [2: bo dwa typy]
-'   * na stronie About podaje numer wersji
-
-' 2020.01.05
-'   * migracja do pkarModule.vb
-'   * przerzucenie funkcjonalnosci BT do sinozeby.vb (module)
-'   cel zmian: 
-'       1) obsluga takze paska LEDowego, oraz zarowki nowej (troche inne komendy)
-'       2) jedna komenda do kilku device do wyslania
-'   * back button
-
 Public NotInheritable Class MainPage
     Inherits Page
 
@@ -121,6 +87,11 @@ Public NotInheritable Class MainPage
 
     Public Async Function BtSendCommandOrCopy(oItem As JedenDevice, bWhite As Boolean, iRed As Integer, iGreen As Integer, iBlue As Integer, iWhite As Integer, sender As Object) As Task
         If SetNotCopy(sender) Then
+            If oItem.iTyp = BulbType.ELKBLEDOM Then
+                ' ELK-BLEDOM
+                If Not Await DialogBoxYNAsync("Support for BLEDOM is experimental, absolutelu no guarantee. Continue?", "Yes", "No") Then Return
+            End If
+
             Await BtSendCommand(oItem, bWhite, iRed, iGreen, iBlue, iWhite)
         Else
             Dim sTxt As String = "RGBbulb "

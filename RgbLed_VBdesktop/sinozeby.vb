@@ -21,6 +21,9 @@ Module sinozeby
             Case 2 ' Triones
                 GuidSvc = New Guid("{0000FFD5-0000-1000-8000-00805F9B34FB}") ' FFD5
                 GuidChar = New Guid("{0000FFD9-0000-1000-8000-00805F9B34FB}") ' FFD9
+            Case 3 'ELK-BLEDOM
+                GuidSvc = New Guid("{0000fff0-0000-1000-8000-00805f9b34fb}")
+                GuidChar = New Guid("{0000fff3-0000-1000-8000-00805f9b34fb}")
             Case Else
                 Return Nothing  ' unknown type, nie umiemy obsluzyc
         End Select

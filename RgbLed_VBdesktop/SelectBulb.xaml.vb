@@ -128,8 +128,9 @@ Public NotInheritable Class SelectBulb
 
         'Debug.WriteLine("jeszcze nie mam")
 
-        If oNew.sName.ToLower.StartsWith("ledble") Then oNew.iTyp = 1
-        If oNew.sName.ToLower.StartsWith("triones") Then oNew.iTyp = 2
+        If oNew.sName.ToLower.StartsWith("ledble") Then oNew.iTyp = BulbType.LEDBLE
+        If oNew.sName.ToLower.StartsWith("triones") Then oNew.iTyp = BulbType.Tricolor
+        If oNew.sName.ToLower.StartsWith("elk-bledom") Then oNew.iTyp = BulbType.ELKBLEDOM
 
         'Debug.WriteLine("typ=" & oNew.iTyp)
 

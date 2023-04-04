@@ -7,7 +7,7 @@
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" 
   IgnorableNamespaces="uap mp uap3 uap5">
   
-  <Identity Name="622PKar.RGBbulb" Publisher="CN=B2AF14E8-43FD-463C-83BA-4CEC47122EA2" Version="3.2301.2.0" />
+  <Identity Name="622PKar.RGBbulb" Publisher="CN=B2AF14E8-43FD-463C-83BA-4CEC47122EA2" Version="3.2304.4.0" />
   <mp:PhoneIdentity PhoneProductId="0b36592f-0a59-4677-816b-38dcf39c5547" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>RGB bulb</DisplayName>
